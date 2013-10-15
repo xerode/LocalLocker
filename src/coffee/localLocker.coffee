@@ -8,16 +8,53 @@
 
 jQuery ->
   $.localLocker = ( element, options ) ->
-    # current state
+    # Internal variables
     state = ''
     lastSave = 0
+    data = {}
+
+    # Internal classes for handling data
+    class StorageData
+      tmp: 'tmp'
+      constructor: ->
+        console.log 'StorageData'
+
+    class LocalStorageData extends StorageData
+
+      set: (name,value) ->
+        localStorage.setItem(name,JSON.stringify(value))
+        @lastSave = new Date()
+
+      get: (name) ->
+        if localStorage.getItem(name)? then return JSON.parse(localStorage.getItem(name)) else return false
+
+    class SessionStorageData extends LocalStorageData
+      set: (name,value) ->
+        sessionStorage.setItem(name,JSON.stringify(value))
+        @lastSave = new Date()
+
+      get: (name) ->
+        if sessionStorage.getItem(name)? then return JSON.parse(sessionStorage.getItem(name)) else return false
+
+    class CookieData extends StorageData
+      constructor: ->
+        super
+        console.log 'CookieData'
+        tmp = 'overwrite'
+
+    class SessionCookieData extends CookieData
+      constructor: ->
+        super
+        console.log 'SessionCookieData'
+        tmp = 'overwrite'
 
     # plugin settings
     @settings = {}
     @defaults = 
-      message: "Hello world"
-      useCookie: false
+      message: 'Hello world'
       session: false
+      useCookie: false
+      cookieName: 'localLocker'
 
     # jQuery version of DOM element attached to the plugin
     @$element = $ element
@@ -39,12 +76,23 @@ jQuery ->
     @init = ->
       @settings = $.extend( {}, @defaults, options )
 
-      if !@hasStorage() or @settings.useCookie then console.log 'use Cookie' else console.log 'use localStorage'
+      data = @getDataLayer()
+
+      console.log( 'data.tmp == ' + data.tmp )
 
       @setState 'ready'
 
+    @getDataLayer = ->
+
+      if !@hasStorage() or @settings.useCookie
+        if @settings.session then return new SessionCookieData else return new CookieData
+      else
+        if @settings.session then return new SessionStorageData else return new LocalStorageData
+
+      return false
+
     @hasStorage = ->
-      Storage?
+      return Storage? and localStorage? and sessionStorage?
 
     # initialise the plugin
     @init()

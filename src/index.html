@@ -22,7 +22,11 @@
 		<script>
 			$( document ).ready( function() {
 
-				// $( "body" ).localLocker();
+				$( "body" ).localLocker( {
+
+					useCookie: false
+
+				} );
 
 				/*
 				if( $().lsLocker( "get", "textarea" ) ) {
