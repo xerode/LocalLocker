@@ -23,6 +23,11 @@ describe 'plugin', ->
 
       expect( plugin.settings.message ).toBe( options.message )
 
+    it 'should be able to call hasStorage()', ->
+      plugin = new $.localLocker( @$element )
+
+      expect( plugin.hasStorage() ).toBeDefined()
+
   describe 'plugin state', ->
     beforeEach ->
       @plugin = new $.localLocker( @$element )
