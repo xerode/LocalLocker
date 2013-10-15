@@ -1,18 +1,16 @@
-# LocalLocker [![Build Status](https://secure.travis-ci.org/xerode/LocalLocker.png?branch=master)](http://travis-ci.org/xerode/LocalLocker)
-
-<description>
+# LocalLocker
 
 ## Version
 
-v0.1.0
+v0.0.1
 
 ## Website Url
 
-https://github.com/xerode/LocalLocker
+[https://github.com/xerode/LocalLocker](https://github.com/xerode/LocalLocker)
 
 ## Bug tracker
 
-If you find a bug, please raise it the [issue here](https://github.com/xerode/LocalLocker/issues) on Github! 
+If you find a bug, please raise the [issue here](https://github.com/xerode/LocalLocker/issues) on Github! 
 
 ## Documenation
 
@@ -26,6 +24,6 @@ $('#element').LocalLocker({
 
 ## Developer
 
-Developed by Paul Bennett, <website url>
+Developed by Paul Bennett, [xerode.net](http://xerode.net)
 
 + [Github Profile](http://github.com/xerode)
