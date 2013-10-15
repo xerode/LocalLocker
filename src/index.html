@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>LocalLocker demo</title>
+	</head>
+	<body>
+		<header>
+			<h1>LocalLocker demo</h1>
+		</header>
+		<form>
+			<fieldset>
+				<textarea>Test</textarea>
+			</fieldset>
+			<fieldset>
+				<input id="SAVE" type="submit" value="Save to local storage" />
+				<input id="LOAD" type="submit" value="Load from local storage" />
+				<input id="CLEAR" type="submit" value="Clear local storage" />
+			</fieldset>
+		</form>
+		<script src="lib/jquery/1.10.2/jquery-1.10.2.min.js"></script>
+		<script src="js/localLocker.js"></script>
+		<script>
+			$( document ).ready( function() {
+
+				// $( "body" ).localLocker();
+
+				/*
+				if( $().lsLocker( "get", "textarea" ) ) {
+					if( confirm( "You have a saved draft, would you like to reload it?") ) {
+						$( "textarea" ).val( $().lsLocker( "get", "textarea" ) );
+					}
+				}
+
+				$( "form" ).submit( function( e ) {
+					e.preventDefault();
+				} );
+
+				$( "input#SAVE" ).click( function( e ) {
+
+					$().lsLocker( "set", "textarea", $( "textarea" ).val() );
+
+					$( "textarea" ).val( "" );
+
+					e.preventDefault();
+
+				} );
+
+				$( "input#LOAD" ).click( function( e ) {
+
+					$( "textarea" ).val( $().lsLocker( "get", "textarea" ) );
+
+					e.preventDefault();
+
+				} );
+
+				$( "input#CLEAR" ).click( function( e ) {
+
+					$().lsLocker( "clear" );
+
+				} );
+
+				*/
+
+			} );
+		</script>
+	</body>
+</html>

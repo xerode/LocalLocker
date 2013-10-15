@@ -1,0 +1,24 @@
+{
+  "name": "localLocker",
+  "version": "0.0.0",
+  "title": "LocalLocker",
+  "description": "Abstraction layer for storing data using LocalStorage with Cookie fallback",
+  "keywords": [],
+
+  "homepage": "http://miniboilerplate.com/",
+  "docs": "http://miniboilerplate.com/",
+  "download": "https://github.com/miniJs/miniBoilerplate/zipball/master",
+  "author" : {
+    "name"  : "Piotr Rochala",
+    "url"   : "http://rocha.la/"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url" : "http://matthieuaussaguel.mit-license.org/"
+    }
+  ],
+  "dependencies" : {
+    "jquery" : ">= 1.8"
+  }
+}

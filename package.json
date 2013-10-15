@@ -1,0 +1,39 @@
+{
+  "name"            : "locallocker",
+  "title"           : "LocalLocker",
+  "version"         : "0.0.0",
+  "homepage"        : "http://miniboilerplate.com",
+  "author"          : {
+    "name"  : "Paul Bennett",
+    "email" : "mail@xerode.net",
+    "url"   : "http://xerode.net"
+  },
+  "repository" : {
+    "type" : "git",
+    "url"  : "git://github.com/miniJs/miniBoilerplate.git"
+  },
+  "description" : "",
+  "keywords": [],
+  "bugs" : {
+    "url" : "https://github.com/xerode/LocalLocker/issues"
+  },
+  "licenses": [{
+    "type": "MIT",
+    "url" : "http://matthieuaussaguel.mit-license.org/"
+  }],
+  "devDependencies" : {
+    "grunt"                 : "0.4.1",
+    "grunt-cli"             : "0.1.9",
+    "grunt-contrib-watch"   : "0.5.3",
+    "grunt-contrib-coffee"  : "0.7.0",
+    "grunt-contrib-jasmine" : "0.5.2",
+    "grunt-contrib-uglify"  : "0.2.4",
+    "grunt-growl"           : "0.1.5",
+    "grunt-contrib-htmlmin" : "~0.1.3",
+    "grunt-contrib-clean"   : "~0.5.0",
+    "grunt-contrib-copy"    : "~0.4.1"
+  },
+  "scripts": {
+    "test": "grunt travis"
+  }
+}

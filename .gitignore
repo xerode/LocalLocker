@@ -1,0 +1,4 @@
+bin
+node_modules
+spec/js/*Spec.js
+spec/js/helpers/*Helper.js
