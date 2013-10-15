@@ -1,20 +1,23 @@
 #
-# Name    : <plugin name>
-# Author  : <your name>, <your website url>, <twitter handle>
-# Version : <version number>
-# Repo    : <repo url>
-# Website : <website url>
+# Name    : LocalLocker
+# Author  : Paul Bennett, http://xerode.net, @xerode
+# Version : 0.0.1
+# Repo    : https://github.com/xerode/LocalLocker
+# Website : https://github.com/xerode/LocalLocker
 #
 
 jQuery ->
   $.localLocker = ( element, options ) ->
     # current state
     state = ''
+    lastSave = 0
 
     # plugin settings
     @settings = {}
     @defaults = 
       message: "Hello world"
+      useCookie: false
+      session: false
 
     # jQuery version of DOM element attached to the plugin
     @$element = $ element
@@ -36,7 +39,7 @@ jQuery ->
     @init = ->
       @settings = $.extend( {}, @defaults, options )
 
-      # console.log( 'init gs ' + @getSetting( 'message' ) + " hasStorage? " + @hasStorage() )
+      if !@hasStorage() or @settings.useCookie then console.log 'use Cookie' else console.log 'use localStorage'
 
       @setState 'ready'
 
