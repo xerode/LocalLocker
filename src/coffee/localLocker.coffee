@@ -1,5 +1,5 @@
 #
-# Name    : LocalLocker
+# _name    : LocalLocker
 # Author  : Paul Bennett, http://xerode.net, @xerode
 # Version : 0.0.1
 # Repo    : https://github.com/xerode/LocalLocker
@@ -20,21 +20,29 @@ jQuery ->
         console.log 'StorageData'
 
     class LocalStorageData extends StorageData
+      constructor: ->
+        localStorage.clear()
 
-      set: (name,value) ->
-        localStorage.setItem(name,JSON.stringify(value))
+      set: (_name,_value) ->
+        console.log( _name + " = " + _value )
+        localStorage.setItem(_name,JSON.stringify(_value))
         @lastSave = new Date()
 
-      get: (name) ->
-        if localStorage.getItem(name)? then return JSON.parse(localStorage.getItem(name)) else return false
+      get: (_name) ->
+        if localStorage.getItem(_name)? then return $.parseJSON(localStorage.getItem(_name)) else return false
+        return false
+
+      clear: (_name) ->
+        localStorage.clear()
+        return true
 
     class SessionStorageData extends LocalStorageData
-      set: (name,value) ->
-        sessionStorage.setItem(name,JSON.stringify(value))
+      set: (_name,_value) ->
+        sessionStorage.setItem(_name,JSON.stringify(_value))
         @lastSave = new Date()
 
-      get: (name) ->
-        if sessionStorage.getItem(name)? then return JSON.parse(sessionStorage.getItem(name)) else return false
+      get: (_name) ->
+        if sessionStorage.getItem(_name)? then return JSON.parse(sessionStorage.getItem(_name)) else return false
 
     class CookieData extends StorageData
       constructor: ->
@@ -51,10 +59,11 @@ jQuery ->
     # plugin settings
     @settings = {}
     @defaults = 
-      message: 'Hello world'
       session: false
       useCookie: false
-      cookieName: 'localLocker'
+      cookie_name: 'localLocker'
+      cookieDomain: '*'
+      cookieExpiry: 0
 
     # jQuery version of DOM element attached to the plugin
     @$element = $ element
@@ -70,10 +79,13 @@ jQuery ->
       @settings[ key ]
 
     # call one of the plugin setting functions
-    @callSettingFunction = ( name, args = [] ) ->
-      @settings[name].apply( this, args )
+    @callSettingFunction = ( _name, args = [] ) ->
+      @settings[_name].apply( this, args )
 
     @init = ->
+
+      console.log( "init" )
+
       @settings = $.extend( {}, @defaults, options )
 
       data = @getDataLayer()
@@ -85,14 +97,24 @@ jQuery ->
     @getDataLayer = ->
 
       if !@hasStorage() or @settings.useCookie
-        if @settings.session then return new SessionCookieData else return new CookieData
+        if @settings.session then return new SessionCookieData() else return new CookieData()
       else
-        if @settings.session then return new SessionStorageData else return new LocalStorageData
+        if @settings.session then return new SessionStorageData() else return new LocalStorageData()
 
       return false
 
     @hasStorage = ->
       return Storage? and localStorage? and sessionStorage?
+
+    @setData = ( _name, _value ) ->
+      return data.set( _name, _value )
+
+    @getData = ( _name ) ->
+      return data.get _name
+
+    @clearData = ( _name ) ->
+      console.log( "clearData" )
+      return data.clear( _name )
 
     # initialise the plugin
     @init()
@@ -104,4 +126,4 @@ jQuery ->
     this.each ->
       if $( this ).data( 'localLocker' ) is undefined
         plugin = new $.localLocker( this, options )
-        $( this).data( 'localLocker', plugin )
+        $( this ).data( 'localLocker', plugin )

@@ -28,6 +28,22 @@ describe 'plugin', ->
 
       expect( plugin.hasStorage() ).toBeDefined()
 
+    it 'should be able to call setData()', ->
+      plugin = new $.localLocker( @$element )
+
+      expect( plugin.setData() ).toBeDefined()
+
+    it 'should be able to call getData()', ->
+      plugin = new $.localLocker( @$element )
+
+      expect( plugin.getData() ).toBeDefined()
+
+    it 'should be able to call clearData()', ->
+      plugin = new $.localLocker( @$element )
+
+      expect( plugin.clearData() ).toBeDefined()
+
+
   describe 'plugin state', ->
     beforeEach ->
       @plugin = new $.localLocker( @$element )

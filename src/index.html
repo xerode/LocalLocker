@@ -22,28 +22,31 @@
 		<script>
 			$( document ).ready( function() {
 
+				console.log( "ready" );
+
 				$( "body" ).localLocker( {
 
 					useCookie: false
 
 				} );
 
-				/*
-				if( $().lsLocker( "get", "textarea" ) ) {
-					if( confirm( "You have a saved draft, would you like to reload it?") ) {
-						$( "textarea" ).val( $().lsLocker( "get", "textarea" ) );
-					}
-				}
-
 				$( "form" ).submit( function( e ) {
 					e.preventDefault();
 				} );
 
+				/*
+				if( $().localLocker( "getData", "textarea" ) ) {
+					if( confirm( "You have a saved draft, would you like to reload it?") ) {
+						$( "textarea" ).val( $().localLocker( "getData", "textarea" ) );
+					}
+				}
+				*/
+
 				$( "input#SAVE" ).click( function( e ) {
 
-					$().lsLocker( "set", "textarea", $( "textarea" ).val() );
+					$( "body" ).localLocker( "setData", "textarea", $( "textarea" ).val() );
 
-					$( "textarea" ).val( "" );
+					$( "textarea" ).val( "Saved!" );
 
 					e.preventDefault();
 
@@ -51,7 +54,7 @@
 
 				$( "input#LOAD" ).click( function( e ) {
 
-					$( "textarea" ).val( $().lsLocker( "get", "textarea" ) );
+					$( "textarea" ).val( $( "body" ).localLocker( "getData", "textarea" ) );
 
 					e.preventDefault();
 
@@ -59,11 +62,9 @@
 
 				$( "input#CLEAR" ).click( function( e ) {
 
-					$().lsLocker( "clear" );
+					$( "body" ).localLocker( "clearData" );
 
 				} );
-
-				*/
 
 			} );
 		</script>
