@@ -31,17 +31,17 @@ describe 'plugin', ->
     it 'should be able to call setData()', ->
       plugin = new $.localLocker( @$element )
 
-      expect( plugin.setData() ).toBeDefined()
+      expect( plugin.setData( 'name', 'value' ) ).toBeDefined()
 
     it 'should be able to call getData()', ->
       plugin = new $.localLocker( @$element )
 
-      expect( plugin.getData() ).toBeDefined()
+      expect( plugin.getData( 'name' ) ).toBeDefined()
 
     it 'should be able to call clearData()', ->
       plugin = new $.localLocker( @$element )
 
-      expect( plugin.clearData() ).toBeDefined()
+      expect( plugin.clearData( 'name' ) ).toBeDefined()
 
 
   describe 'plugin state', ->

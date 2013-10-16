@@ -20,29 +20,36 @@ jQuery ->
         console.log 'StorageData'
 
     class LocalStorageData extends StorageData
-      constructor: ->
-        localStorage.clear()
-
       set: (_name,_value) ->
-        console.log( _name + " = " + _value )
-        localStorage.setItem(_name,JSON.stringify(_value))
+        # console.log( "LocalStorageData.set( " + _name + ", " + _value + " )" )
+        localStorage.setItem( _name, JSON.stringify( _value ) )
         @lastSave = new Date()
+        return true
 
       get: (_name) ->
-        if localStorage.getItem(_name)? then return $.parseJSON(localStorage.getItem(_name)) else return false
+        # console.log( "LocalStorageData.get( " + _name + " )" )
+        if localStorage.getItem( _name )? then return JSON.parse( localStorage.getItem( _name ) )
         return false
 
       clear: (_name) ->
-        localStorage.clear()
+        if _name? then localStorage.removeItem( _name ) else localStorage.clear()
         return true
 
     class SessionStorageData extends LocalStorageData
       set: (_name,_value) ->
-        sessionStorage.setItem(_name,JSON.stringify(_value))
+        # console.log( "LocalStorageData.set( " + _name + ", " + _value + " )" )
+        sessionStorage.setItem( _name, JSON.stringify( _value ) )
         @lastSave = new Date()
+        return true
 
       get: (_name) ->
-        if sessionStorage.getItem(_name)? then return JSON.parse(sessionStorage.getItem(_name)) else return false
+        # console.log( "LocalStorageData.get( " + _name + " )" )
+        if sessionStorage.getItem( _name )? then return JSON.parse( sessionStorage.getItem( _name ) )
+        return false
+
+      clear: (_name) ->
+        if _name? then sessionStorage.removeItem( _name ) else sessionStorage.clear()
+        return true
 
     class CookieData extends StorageData
       constructor: ->
@@ -97,6 +104,7 @@ jQuery ->
     @getDataLayer = ->
 
       if !@hasStorage() or @settings.useCookie
+        # No localStorage support, or explicitly said to use cookies
         if @settings.session then return new SessionCookieData() else return new CookieData()
       else
         if @settings.session then return new SessionStorageData() else return new LocalStorageData()
@@ -104,17 +112,19 @@ jQuery ->
       return false
 
     @hasStorage = ->
-      return Storage? and localStorage? and sessionStorage?
+      Storage? and localStorage? and sessionStorage?
 
     @setData = ( _name, _value ) ->
-      return data.set( _name, _value )
+      console.log( "setData( " + _name + ", " + _value + " )" )
+      data.set( _name, _value )
 
     @getData = ( _name ) ->
-      return data.get _name
+      console.log( "getData( " + _name + " )" )
+      data.get( _name )
 
     @clearData = ( _name ) ->
       console.log( "clearData" )
-      return data.clear( _name )
+      data.clear( _name )
 
     # initialise the plugin
     @init()

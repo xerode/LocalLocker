@@ -24,27 +24,30 @@
 
 				console.log( "ready" );
 
+				/*
 				$( "body" ).localLocker( {
 
 					useCookie: false
 
 				} );
+				*/
+
+				var plugin = new $.localLocker( "body" );
 
 				$( "form" ).submit( function( e ) {
 					e.preventDefault();
 				} );
 
-				/*
-				if( $().localLocker( "getData", "textarea" ) ) {
-					if( confirm( "You have a saved draft, would you like to reload it?") ) {
-						$( "textarea" ).val( $().localLocker( "getData", "textarea" ) );
+
+				if( plugin.getData( "textarea" ) ) {
+					if( confirm( "You have an unsaved draft, would you like to reload it?") ) {
+						$( "textarea" ).val( plugin.getData( "textarea" ) );
 					}
 				}
-				*/
 
 				$( "input#SAVE" ).click( function( e ) {
 
-					$( "body" ).localLocker( "setData", "textarea", $( "textarea" ).val() );
+					plugin.setData( "textarea", $( "textarea" ).val() );
 
 					$( "textarea" ).val( "Saved!" );
 
@@ -54,7 +57,7 @@
 
 				$( "input#LOAD" ).click( function( e ) {
 
-					$( "textarea" ).val( $( "body" ).localLocker( "getData", "textarea" ) );
+					$( "textarea" ).val( plugin.getData( "textarea" ) );
 
 					e.preventDefault();
 
@@ -62,7 +65,7 @@
 
 				$( "input#CLEAR" ).click( function( e ) {
 
-					$( "body" ).localLocker( "clearData" );
+					plugin.clearData();
 
 				} );
 
