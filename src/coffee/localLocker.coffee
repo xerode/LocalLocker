@@ -77,7 +77,7 @@ jQuery ->
         return false
 
       bakeCookie: ->
-        cookie = [ @settings.name, '=', JSON.stringify( @store ), ';', 'expires=', @settings.expiration, ';', 'domain=', @settings.domain, ';', 'path=', @settings.path, ';' ].join( '' )
+        cookie = [ @settings.name, '=', JSON.stringify( @store ), ';', 'expires=', @settings.expiration, ';', 'domain=', @settings.domain, ';', 'path=', @settings.path, ';' ].join( ' ' )
         console.log( 'bakeCookie: ' + cookie )
         document.cookie = cookie
 
