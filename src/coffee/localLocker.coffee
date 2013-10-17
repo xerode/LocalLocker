@@ -76,10 +76,23 @@ jQuery ->
           return JSON.parse( result[ 1 ] )[ _name ] || false
         return false
 
+      clear: ( _name ) ->
+        console.log( 'clear ' + _name )
+        if _name?
+          @store[ _name ] = null
+          @bakeCookie()
+        else
+          document.cookie = [ @settings.name, '="";', 'expires=-1;', 'domain=', @settings.domain, ';', 'path=', @settings.path, ';' ].join( '' )
+
+        # else
+        #  destroy cookie
+        return true
+
       bakeCookie: ->
         cookie = [ @settings.name, '=', JSON.stringify( @store ), ';', 'expires=', @settings.expiration, ';', 'domain=', @settings.domain, ';', 'path=', @settings.path, ';' ].join( ' ' )
         console.log( 'bakeCookie: ' + cookie )
         document.cookie = cookie
+        return true
 
     class SessionCookieData extends CookieData
       constructor: ->
