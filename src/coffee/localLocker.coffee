@@ -59,7 +59,8 @@ jQuery ->
         console.log 'CookieData'
         # Build store out of existing cookie data
         # Might need to use RegExp.escape( @settings.name ) here
-        # @store = JSON.parse( document.cookie.match( new RegExp( '=(\{.+\})' ) )[ 1 ] )
+        if document.cookie is not ""
+          @store = JSON.parse( document.cookie.match( new RegExp( '=(\{.+\})' ) )[ 1 ] )
 
       set: ( _name, _value ) ->
         @store[ _name ] = _value
@@ -70,7 +71,7 @@ jQuery ->
       get: ( _name ) ->
         if @store[ _name ]?
           return @store[ _name ]
-        else if document.cookie?
+        else if document.cookie is not ""
           # Might need to use RegExp.escape( @settings.name ) here
           result = document.cookie.match( new RegExp( '=(\{.+\})' ) )
           return JSON.parse( result[ 1 ] )[ _name ] || false
