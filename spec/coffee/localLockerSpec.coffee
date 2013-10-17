@@ -1,6 +1,7 @@
 describe 'plugin', ->
   options =
     message: 'Hello World'
+    useCookie: true
 
   beforeEach ->
     loadFixtures 'fragment.html'
