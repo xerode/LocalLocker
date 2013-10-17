@@ -20,57 +20,81 @@ jQuery ->
         console.log 'StorageData'
 
     class LocalStorageData extends StorageData
-      set: (_name,_value) ->
-        # console.log( "LocalStorageData.set( " + _name + ", " + _value + " )" )
+      set: ( _name, _value ) ->
         localStorage.setItem( _name, JSON.stringify( _value ) )
         @lastSave = new Date()
         return true
 
-      get: (_name) ->
-        # console.log( "LocalStorageData.get( " + _name + " )" )
+      get: ( _name ) ->
         if localStorage.getItem( _name )? then return JSON.parse( localStorage.getItem( _name ) )
         return false
 
-      clear: (_name) ->
+      clear: ( _name ) ->
         if _name? then localStorage.removeItem( _name ) else localStorage.clear()
         return true
 
     class SessionStorageData extends LocalStorageData
-      set: (_name,_value) ->
-        # console.log( "LocalStorageData.set( " + _name + ", " + _value + " )" )
+      set: ( _name, _value ) ->
         sessionStorage.setItem( _name, JSON.stringify( _value ) )
         @lastSave = new Date()
         return true
 
-      get: (_name) ->
-        # console.log( "LocalStorageData.get( " + _name + " )" )
+      get: ( _name ) ->
         if sessionStorage.getItem( _name )? then return JSON.parse( sessionStorage.getItem( _name ) )
         return false
 
-      clear: (_name) ->
+      clear: ( _name ) ->
         if _name? then sessionStorage.removeItem( _name ) else sessionStorage.clear()
         return true
 
     class CookieData extends StorageData
+      store: {}
+      settings:
+        name: 'localLocker'
+        domain: window.location.host.toString()
+        path: '/'
+        expiration: new Date()
+
       constructor: ->
-        super
         console.log 'CookieData'
-        tmp = 'overwrite'
+        # Build store out of existing cookie data
+        # Might need to use RegExp.escape( @settings.name ) here
+        # @store = JSON.parse( document.cookie.match( new RegExp( '=(\{.+\})' ) )[ 1 ] )
+
+      set: ( _name, _value ) ->
+        @store[ _name ] = _value
+        @settings.expiration.setTime( @settings.expiration.getTime() + 90000 )
+        @bakeCookie()
+        return true
+
+      get: ( _name ) ->
+        if @store[ _name ]?
+          return @store[ _name ]
+        else if document.cookie?
+          # Might need to use RegExp.escape( @settings.name ) here
+          result = document.cookie.match( new RegExp( '=(\{.+\})' ) )
+          return JSON.parse( result[ 1 ] )[ _name ] || false
+        return false
+
+      bakeCookie: ->
+        cookie = [ @settings.name, '=', JSON.stringify( @store ), ';', 'expires=', @settings.expiration, ';', 'domain=', @settings.domain, ';', 'path=', @settings.path, ';' ].join( '' )
+        console.log( 'bakeCookie: ' + cookie )
+        document.cookie = cookie
 
     class SessionCookieData extends CookieData
       constructor: ->
-        super
         console.log 'SessionCookieData'
-        tmp = 'overwrite'
 
     # plugin settings
     @settings = {}
     @defaults = 
       session: false
       useCookie: false
-      cookie_name: 'localLocker'
-      cookieDomain: '*'
+      # Put following as properties of cookie classes?
+      cookieName: 'localLocker'
+      cookieDomain: window.location.host.toString()
       cookieExpiry: 0
+      cookiePath: '/'
 
     # jQuery version of DOM element attached to the plugin
     @$element = $ element
@@ -91,13 +115,11 @@ jQuery ->
 
     @init = ->
 
-      console.log( "init" )
-
       @settings = $.extend( {}, @defaults, options )
 
       data = @getDataLayer()
 
-      console.log( 'data.tmp == ' + data.tmp )
+      # console.log( "Cookies == " + document.cookie )
 
       @setState 'ready'
 
@@ -115,15 +137,12 @@ jQuery ->
       Storage? and localStorage? and sessionStorage?
 
     @setData = ( _name, _value ) ->
-      console.log( "setData( " + _name + ", " + _value + " )" )
       data.set( _name, _value )
 
     @getData = ( _name ) ->
-      console.log( "getData( " + _name + " )" )
       data.get( _name )
 
     @clearData = ( _name ) ->
-      console.log( "clearData" )
       data.clear( _name )
 
     # initialise the plugin

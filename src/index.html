@@ -24,15 +24,9 @@
 
 				console.log( "ready" );
 
-				/*
-				$( "body" ).localLocker( {
-
-					useCookie: false
-
+				var plugin = new $.localLocker( "body", {
+					useCookie: true
 				} );
-				*/
-
-				var plugin = new $.localLocker( "body" );
 
 				$( "form" ).submit( function( e ) {
 					e.preventDefault();
