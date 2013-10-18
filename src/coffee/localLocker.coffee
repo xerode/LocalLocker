@@ -59,22 +59,28 @@ jQuery ->
         console.log 'CookieData'
         # Build store out of existing cookie data
         # Might need to use RegExp.escape( @settings.name ) here
-        if document.cookie is not ""
+        # if document.cookie isnt ""
+        try
           @store = JSON.parse( document.cookie.match( new RegExp( '=(\{.+\})' ) )[ 1 ] )
+        catch error
+          @store = {}
 
       set: ( _name, _value ) ->
         @store[ _name ] = _value
-        @settings.expiration.setTime( @settings.expiration.getTime() + 90000 )
+        @settings.expiration.setTime( new Date().getTime() + 86400 )
         @bakeCookie()
         return true
 
       get: ( _name ) ->
         if @store[ _name ]?
           return @store[ _name ]
-        else if document.cookie is not ""
+        else if document.cookie isnt ""
           # Might need to use RegExp.escape( @settings.name ) here
           result = document.cookie.match( new RegExp( '=(\{.+\})' ) )
-          return JSON.parse( result[ 1 ] )[ _name ] || false
+          try
+            return JSON.parse( result[ 1 ] )[ _name ]
+          catch error
+            return false
         return false
 
       clear: ( _name ) ->
@@ -83,21 +89,20 @@ jQuery ->
           @store[ _name ] = null
           @bakeCookie()
         else
-          document.cookie = [ @settings.name, '="";', 'expires=-1;', 'domain=', @settings.domain, ';', 'path=', @settings.path, ';' ].join( '' )
-
-        # else
-        #  destroy cookie
+          @store = {}
+          document.cookie = [ @settings.name + '="";', 'expires=-1;', 'domain=' + @settings.domain + ';', 'path=' + @settings.path + ';' ].join( '' )
         return true
 
       bakeCookie: ->
-        cookie = [ @settings.name, '=', JSON.stringify( @store ), ';', 'expires=', @settings.expiration, ';', 'domain=', @settings.domain, ';', 'path=', @settings.path, ';' ].join( ' ' )
+        cookie = [ @settings.name, '=', JSON.stringify( @store ), ';', 'expires=', @settings.expiration, ';', 'domain=', @settings.domain, ';', 'path=', @settings.path, ';' ].join( '' )
         console.log( 'bakeCookie: ' + cookie )
         document.cookie = cookie
         return true
 
     class SessionCookieData extends CookieData
       constructor: ->
-        console.log 'SessionCookieData'
+        super
+        @settings.expiration = 0
 
     # plugin settings
     @settings = {}
@@ -132,8 +137,6 @@ jQuery ->
       @settings = $.extend( {}, @defaults, options )
 
       data = @getDataLayer()
-
-      # console.log( "Cookies == " + document.cookie )
 
       @setState 'ready'
 
